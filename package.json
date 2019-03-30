@@ -1,0 +1,41 @@
+{
+  "name": "oxford-dictionaries-api",
+  "version": "0.0.1",
+  "description": "node module for oxford dictionaries api",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josuerojasrojas/oxford-dictionaries-api.git"
+  },
+  "keywords": [
+    "dictionary",
+    "dictionaries",
+    "oxford",
+    "words",
+    "definition",
+    "wordlist",
+    "thesaurus",
+    "lemmatron",
+    "lexistats",
+    "translation",
+    "sentences",
+    "api"
+  ],
+  "author": "josue rojas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josuerojasrojas/oxford-dictionaries-api/issues"
+  },
+  "homepage": "https://github.com/josuerojasrojas/oxford-dictionaries-api#readme",
+  "devDependencies": {
+    "dotenv": "^7.0.0"
+  }
+}
