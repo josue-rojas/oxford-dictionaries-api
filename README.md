@@ -3,7 +3,7 @@ node module wraper for [Oxford dictionaries api](https://developer.oxforddiction
 
 ### TODO:
 - need to implement search api
-- need to implement lexistats api
+- need to implement lexistats (/words and /ngrams) api
 - need to implement utility api
 - need to implement wordlist with advance filter api
 - need to add testing and test
@@ -16,6 +16,7 @@ node module wraper for [Oxford dictionaries api](https://developer.oxforddiction
 - thesaurus
 - wordlist (basic filters only, not advance filters)
 - sentences
+- lexistats (only /word)
 
 a quick how to...
 ```bash
