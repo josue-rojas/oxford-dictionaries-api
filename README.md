@@ -27,7 +27,7 @@ const app_id = process.env.APP_ID;
 const app_key = process.env.APP_KEY;
 
 
-let oxford= require('./index');
+let oxford= require('oxford-dictionaries-api');
 // create a new oxforddictionaries class with set id and key
 let oxforddictionaries = new oxford(app_id, app_key);
 
