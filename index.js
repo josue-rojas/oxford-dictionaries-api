@@ -50,7 +50,7 @@ class OxfordDictionaries {
     }
   }
 
-  entries(word_id, source_lang, region, filters){
+  entries({word_id, source_lang, region, filters}){
     let options = { ...this.options };
     options.path += '/entries' +
             `/${source_lang || 'en'}` +
@@ -60,7 +60,7 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  lemmatron(word_id, source_lang, filters){
+  lemmatron({word_id, source_lang, filters}){
     let options = { ...this.options };
     options.path += '/inflections' +
             `/${source_lang || 'en'}` +
@@ -71,7 +71,7 @@ class OxfordDictionaries {
 
   // search(source_lang, )
 
-  translation(source_translation_language, word_id, target_translation_language){
+  translation({source_translation_language, word_id, target_translation_language}){
     let options = { ...this.options };
     options.path += '/entries' +
             `/${source_translation_language}` +
@@ -80,7 +80,7 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  thesaurus(word_id, source_lang, synonyms, antonyms){
+  thesaurus({word_id, source_lang, synonyms, antonyms}){
     let options = { ...this.options };
     options.path += '/entries' +
             `/${source_lang || 'en'}` +
@@ -92,7 +92,7 @@ class OxfordDictionaries {
   }
 
   // basic wordlist search for now
-  wordlist(filters_basic, source_lang, limit, offset){
+  wordlist({filters_basic, source_lang, limit, offset}){
     let options = { ...this.options };
     options.path += '/wordlist' +
           `/${source_lang || 'en'}` +
@@ -103,7 +103,7 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  sentences(word_id, source_lang){
+  sentences({word_id, source_lang}){
     let options = { ...this.options };
     options.path += '/entries' +
             `/${source_lang || 'en'}` +
@@ -112,7 +112,7 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  lexistats(source_lang, corpus, wordform, trueCase, lemma, lexicalCategory){
+  lexistats({source_lang, corpus, wordform, trueCase, lemma, lexicalCategory}){
     let options = { ...this.options };
     options.path += '/stats/frequency/words' +
             `/${source_lang}` +
