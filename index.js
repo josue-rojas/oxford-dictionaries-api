@@ -112,7 +112,18 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  // lexistats(source_lang, corpus, )
+  lexistats(source_lang, corpus, wordform, trueCase, lemma, lexicalCategory){
+    let options = { ...this.options };
+    options.path += '/stats/frequency/words' +
+            `/${source_lang}` +
+            '/?' +
+            `${corpus ? `corpus=${corpus}` : ''}` +
+            `${wordform ? `&wordform=${wordform}` : ''}` +
+            `${trueCase ? `&trueCase=${trueCase}` : ''}` +
+            `${lemma ? `&lemma=${lemma}` : ''}` +
+            `${lexicalCategory ? `&lexicalCategory=${lexicalCategory}` : ''}`;
+    return httpsGetRequest(options);
+  }
 
   // utility
 
