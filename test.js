@@ -7,9 +7,12 @@ const app_key = process.env.APP_KEY;
 let oxforddic= require('./index');
 let oxforddictionaries = new oxforddic(app_id, app_key);
 
-console.log(app_id);
+// oxforddictionaries.entries('ace')
+// .then((data)=>{
+//   console.log(data);
+// })
 
-oxforddictionaries.entries('ace')
-.then((data)=>{
-  console.log(data);
-})
+oxforddictionaries.wordlist('registers=Rare;domains=Art')
+  .then((data)=>{
+    console.log(data);
+  })

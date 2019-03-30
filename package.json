@@ -1,7 +1,7 @@
 {
   "name": "oxford-dictionaries-api",
   "version": "0.0.1",
-  "description": "node module for oxford dictionaries api",
+  "description": "node module wrapper for oxford dictionaries api",
   "main": "index.js",
   "files": [
     "index.js",
