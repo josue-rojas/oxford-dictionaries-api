@@ -23,11 +23,12 @@ let oxforddictionaries = new oxford(app_id, app_key);
 #### entries({word_id, source_lang, region, filters})
 function takes in an object with the following:
 
-|Key | Type | Optional | About |
-|---- |--- |--- |
-| word_id| String | No | An Entry identifier. Case-sensitive. |
+
+| Key | Type | Optional | About |
+| --- | --- | -- | --- |
+| word_id | String | No | An Entry identifier. Case-sensitive. |
 | source_lang | String | Yes | IANA language code |
-| region | String | Yes | Region filter parameter. gb = Oxford Dictionary of English. us = New Oxford American Dictionary.
+| region | String | Yes | Region filter parameter. gb = Oxford Dictionary of English. us = New Oxford American Dictionary. |
 | filters | String | Yes | Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma. |
 
 Example:
@@ -53,7 +54,7 @@ oxforddictionaries.entries({word_id: 'ace', filter: 'grammaticalFeatures=singula
 function takes in an object with the following:
 
 |Key | Type | Optional | About |
-|---- |--- |--- |
+| --- | --- | -- | --- |
 | word_id | String | No | The input word |
 | source_lang | String | Yes | IANA language code |
 | filters | String | Yes | Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma.
@@ -63,7 +64,7 @@ function takes in an object with the following:
 function takes in an object with the following:
 
 |Key | Type | Optional | About |
-|---- |--- |--- |
+| --- | --- | -- | --- |
 | source_lang | String | No | IANA language code |
 | word_id | String| No| The source word|
 | target_translation_language | String | No | IANA language code |
@@ -72,7 +73,7 @@ function takes in an object with the following:
 function takes in an object with the following:
 
 |Key | Type | Optional | About |
-|---- |--- |--- |
+| --- | --- | -- | --- |
 | word_id | String | No | An Entry identifier. Case-sensitive |
 | source_lang | String | Yes | IANA language code |
 | synonyms | boolean | No | Flag to get synonyms |
@@ -82,7 +83,7 @@ function takes in an object with the following:
 function takes in an object with the following:
 
 |Key | Type | Optional | About |
-|---- |--- |--- |
+| --- | --- | -- | --- |
 | word_id | String | No | An Entry identifier. Case-sensitive. |
 | source_lang | String | Yes | IANA language code |
 
@@ -92,7 +93,7 @@ Note only endpoint: /stats/frequency/word/{source_lang}/
 function takes in an object with the following:
 
 |Key | Type | Optional | About |
-|---- |--- |--- |
+| --- | --- | -- | --- |
 | source_lang | String | No | ANA language code |
 | corpus | String | No | For corpora other than 'nmc' (New Monitor Corpus) please contact api@oxforddictionaries.com |
 | wordform | String | Yes | The written form of the word to look up (preserving case e.g., Books vs books) |
