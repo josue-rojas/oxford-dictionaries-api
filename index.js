@@ -59,6 +59,7 @@ class OxfordDictionaries {
     this.regions = this.regions.bind(this);
     this.grammaticalFeatures = this.grammaticalFeatures.bind(this);
     // then setup objects
+    // (might change or remove this since they can just be called straight without .utility)
     this.utility = {
       languages: this.languages,
       filters: this.filters,
@@ -89,7 +90,18 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  // search(source_lang, )
+  search({source_lang, source_search_language, target_search_language, q, prefix, regions, limit, offset}){
+    let options = { ...this.options };
+    options.path += '/search' +
+            `/${source_lang || source_search_language || 'en'}` +
+            `${target_search_language ? `/translation=${target_search_language}` : ''}` +
+            `?q=${q}` +
+            `${prefix ? '&prefix=true' : '&prefix=false'}` +
+            `${regions ? `&regions=${regions}` : ''}` +
+            `${limit ? `&limit=${limit}` : ''}` +
+            `${offset ? `&offset=${offset}`}`;
+    return httpsGetRequest(options);
+  }
 
   translation({source_translation_language, word_id, target_translation_language}){
     let options = { ...this.options };

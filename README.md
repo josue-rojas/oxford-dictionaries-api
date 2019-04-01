@@ -113,16 +113,16 @@ function takes in an object with the following:
 
 
 ### TODO:
-- need to implement search api
 - need to implement lexistats (/words and /ngrams) api
 - need to implement wordlist with advance filter api
-- need to add testing and test
+- need to add testing and test ***
 - add defaults
 - need to update readme with examples
 
 ## Already implemented
 - entries
 - lemmatron
+- search
 - translation
 - thesaurus
 - wordlist (basic filters only, not advance filters)
