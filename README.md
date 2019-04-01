@@ -60,7 +60,7 @@ function takes in an object with the following:
 | filters | String | Yes | Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma.
 
 
-#### source_translation_language, word_id, target_translation_language
+#### translation({source_translation_language, word_id, target_translation_language})
 function takes in an object with the following:
 
 |Key | Type | Optional | About |
@@ -78,6 +78,16 @@ function takes in an object with the following:
 | source_lang | String | Yes | IANA language code |
 | synonyms | boolean | No | Flag to get synonyms |
 | antonyms | boolean | No | Flag to get antonyms |
+
+#### wordlist({filters_basic, source_lang, limit, offset})
+function takes in an object with the following:
+
+|Key | Type | Optional | About |
+| --- | --- | -- | --- |
+| filters_basic | | | |
+| source_lang | | | |
+| limit | | | |
+| offset | | | |
 
 #### sentences({word_id, source_lang})
 function takes in an object with the following:
@@ -105,9 +115,9 @@ function takes in an object with the following:
 ### TODO:
 - need to implement search api
 - need to implement lexistats (/words and /ngrams) api
-- need to implement utility api
 - need to implement wordlist with advance filter api
 - need to add testing and test
+- add defaults
 - need to update readme with examples
 
 ## Already implemented
@@ -118,3 +128,4 @@ function takes in an object with the following:
 - wordlist (basic filters only, not advance filters)
 - sentences
 - lexistats (only /word)
+- utility
