@@ -99,7 +99,7 @@ class OxfordDictionaries {
             `${prefix ? '&prefix=true' : '&prefix=false'}` +
             `${regions ? `&regions=${regions}` : ''}` +
             `${limit ? `&limit=${limit}` : ''}` +
-            `${offset ? `&offset=${offset}`}`;
+            `${offset ? `&offset=${offset}` : ''}`;
     return httpsGetRequest(options);
   }
 
