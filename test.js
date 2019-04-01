@@ -15,3 +15,6 @@ oxforddictionaries.wordlist('registers=Rare;domains=Art')
   .then((data)=>{
     console.log(data);
   })
+
+oxforddictionaries.utility.language()
+  .then((data)=> console.log(data));

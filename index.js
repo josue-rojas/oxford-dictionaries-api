@@ -48,6 +48,26 @@ class OxfordDictionaries {
         'app_key': app_key
       }
     }
+
+    // setup functions for not so direct names endpoints
+    // first bind this
+    this.languages = this.languages.bind(this);
+    this.filters = this.filters.bind(this);
+    this.lexicalcategories = this.bind(this);
+    this.registers = this.registers.bind(this);
+    this.domains = this.domains.bind(this);
+    this.regions = this.regions.bind(this);
+    this.grammaticalFeatures = this.grammaticalFeatures.bind(this);
+    // then setup objects
+    this.utility = {
+      languages: this.languages,
+      filters: this.filters,
+      lexicalcategories: this.lexicalcategories,
+      registers: this.registers,
+      domains: this.domains,
+      regions: this.regions,
+      grammaticalFeatures: this.grammaticalFeatures
+    };
   }
 
   entries({word_id, source_lang, region, filters}){
@@ -125,8 +145,58 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  // utility
+  // utility functions
+  languages({sourceLanguage, targetLanguage} = {}){
+    let options = { ...this.options };
+    options.path += '/languages?' +
+          `${sourceLanguage ? `sourceLanguage=${sourceLanguage}` : ''}` +
+          `${targetLanguage ? `&targetLanguage=${targetLanguage}`: ''}`;
+    return httpsGetRequest(options);
+  }
 
+  filters({endpoint} = {}){
+    let options = { ...this.options };
+    options.path += '/filters' +
+            `${endpoint ? `/${endpoint}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  lexicalcategories({language} = {}){
+    let options = { ...this.options };
+    options.path += '/lexicalcategories' +
+            `/${language || 'en'}`;
+    return httpsGetRequest(options);
+  }
+
+  registers({source_language, target_register_language} = {}){
+    let options = { ...this.options };
+    options.path += '/registers' +
+            `/${source_language || 'en'}` +
+            `${target_register_language ? `/${target_register_language}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  domains({source_language} = {}){
+    let options = { ...this.options };
+    options.path += '/domains' +
+            `/${source_language || 'en'}` +
+            `${target_register_language ? `/${target_register_language}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  regions({source_language} = {}){
+    let options = { ...this.options };
+    options.path += '/regions' +
+            `/${source_language || 'en'}`;
+    return httpsGetRequest(options);
+  }
+
+  grammaticalFeatures({source_language} = {}){
+    let options = { ...this.options };
+    options.path += '/grammaticalFeatures' +
+            `/${source_language || 'en'}`;
+    return httpsGetRequest(options);
+  }
 }
 
 module.exports = OxfordDictionaries;
