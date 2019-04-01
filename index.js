@@ -53,7 +53,7 @@ class OxfordDictionaries {
     // first bind this
     this.languages = this.languages.bind(this);
     this.filters = this.filters.bind(this);
-    this.lexicalcategories = this.bind(this);
+    this.lexicalcategories = this.lexicalcategories.bind(this);
     this.registers = this.registers.bind(this);
     this.domains = this.domains.bind(this);
     this.regions = this.regions.bind(this);
