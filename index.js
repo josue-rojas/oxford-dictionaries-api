@@ -24,7 +24,7 @@ function httpsGetRequest(options) {
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
         try {
-          const parsedData = JSON.parse(rawData);
+          const parsedData = JSON.parse(data);
           resolve(parsedData);
         } catch (e) {
           reject(new Error(e));
@@ -123,20 +123,59 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  // lexistats({
-  //   source_lang, corpus, wordform, trueCase, lemma, lexicalCategory,
-  // }) {
-  //   const options = { ...this.options };
-  //   options.path += '/stats/frequency/words'
-  //           + `/${source_lang}`
-  //           + '/?'
-  //           + `${corpus ? `corpus=${corpus}` : ''}`
-  //           + `${wordform ? `&wordform=${wordform}` : ''}`
-  //           + `${trueCase ? `&trueCase=${trueCase}` : ''}`
-  //           + `${lemma ? `&lemma=${lemma}` : ''}`
-  //           + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory}` : ''}`;
-  //   return httpsGetRequest(options);
-  // }
+  lexistats_ngrams({ source_lang, corpus, ngram_size, tokens, contains, format, minFrequency, maxFrequency, collate, sort, offset, limit }){
+    const options = { ...this.options };
+    options.path += '/features/ngrams'
+            + `/${source_lang || 'en'}`
+            + `/${corpus || 'nmc'}`
+            + `/${ngram_size || '1'}`
+            + '?'
+            + `${tokens ? `&tokens=${tokens}` : ''}`
+            + `${contains ? `&contains=${contains}` : ''}`
+            + `${format ? `&format=${format}` : ''}`
+            + `${minFrequency ? `&minFrequency=${minFrequency}` : ''}`
+            + `${maxFrequency ? `&maxFrequency=${maxFrequency}` : ''}`
+            + `${collate ? `&collate=${collate}` : ''}`
+            + `${sort ? `&sort=${sort}` : ''}`
+            + `${offset ? `&offset=${offset}` : ''}`
+            + `${limit ? `&limit=${limit}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  lexistats_word({ source_lang, corpus, wordform, trueCase, lemma, lexicalCategory }){
+    const options = { ...this.options };
+    options.path += '/features/word'
+            + `/${source_lang || 'en'}`
+            + '?'
+            + `/${corpus ? `&corpus=${corpus}` : '&corpus=nmc'}`
+            + `${wordform ? `&wordform=${wordform}` : ''}`
+            + `${trueCase ? `&trueCase=${trueCase}` : ''}`
+            + `${lemma ? `&lemma=${lemma}` : ''}`
+            + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  lexistats_words({ source_lang, corpus, wordform, trueCase, lemma, lexicalCategory, grammaticalFeatures, minFrequency, maxFrequency, minNormalizedFrequency, maxNormalizedFrequency, collate, sort, offset, limit }){
+    const options = { ...this.options };
+    options.path += '/features/words'
+            + `/${source_lang || 'en'}`
+            + '?'
+            + `/${corpus ? `&corpus=${corpus}` : '&corpus=nmc'}`
+            + `${wordform ? `&wordform=${wordform}` : ''}`
+            + `${trueCase ? `&trueCase=${trueCase}` : ''}`
+            + `${lemma ? `&lemma=${lemma}` : ''}`
+            + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory}` : ''}`;
+            + `${grammaticalFeatures ? `&grammaticalFeatures=${grammaticalFeatures}` : ''}`;
+            + `${minFrequency ? `&minFrequency=${minFrequency}` : ''}`;
+            + `${maxFrequency ? `&maxFrequency=${maxFrequency}` : ''}`;
+            + `${minNormalizedFrequency ? `&minNormalizedFrequency=${minNormalizedFrequency}` : ''}`;
+            + `${maxNormalizedFrequency ? `&maxNormalizedFrequency=${maxNormalizedFrequency}` : ''}`;
+            + `${collate ? `&collate=${collate}` : ''}`;
+            + `${sort ? `&sort=${sort}` : ''}`;
+            + `${offset ? `&offset=${offset}` : ''}`;
+            + `${limit ? `&limit=${limit}` : ''}`;
+    return httpsGetRequest(options);
+  }
 
   // utility functions
   domains({ source_lang, target_lang } = {}) {
@@ -172,8 +211,8 @@ class OxfordDictionaries {
   languages({ sourceLanguage, targetLanguage } = {}) {
     const options = { ...this.options };
     options.path += '/languages?'
-          + `${sourceLanguage ? `sourceLanguage=${sourceLanguage}` : ''}`
-          + `${targetLanguage ? `&targetLanguage=${targetLanguage}` : ''}`;
+            + `${sourceLanguage ? `sourceLanguage=${sourceLanguage}` : ''}`
+            + `${targetLanguage ? `&targetLanguage=${targetLanguage}` : ''}`;
     return httpsGetRequest(options);
   }
 
