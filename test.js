@@ -7,17 +7,18 @@ let oxforddic= require('./index');
 let oxforddictionaries = new oxforddic(app_id, app_key);
 
 
-oxforddictionaries.entries({word_id: 'ace'})
-  .then((data)=>{
-    console.log('entries',data);
-  })
-  .catch((e) => console.log(e));
-
-// oxforddictionaries.wordlist({filters_basic:'registers=Rare;domains=Art'})
+// oxforddictionaries.entries({word_id: 'ace'})
 //   .then((data)=>{
-//     console.log('wordlist',data);
+//     console.log('entries',data);
 //   })
+//   .catch((e) => console.log(e));
 
-oxforddictionaries.languages()
-  .then((data)=> console.log('languages',data))
-  .catch((e) => console.log(e));
+oxforddictionaries.grammaticalFeatures({source_lang: 'en-gb'})
+  .then((data)=>{
+    console.log(data);
+  })
+  .catch((e) => console.log('e', e));
+
+// oxforddictionaries.languages()
+//   .then((data)=> console.log('languages',data))
+//   .catch((e) => console.log(e));
