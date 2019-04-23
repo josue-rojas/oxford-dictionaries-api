@@ -113,19 +113,14 @@ function takes in an object with the following:
 
 
 ### TODO:
-- need to implement lexistats (/words and /ngrams) api
-- need to implement wordlist with advance filter api
-- need to add testing and test ***
-- add defaults
-- need to update readme with examples
+(all for v2)
+- lexistats
 
-## Already implemented
+## Already implemented (need testing)
 - entries
-- lemmatron
+- lemmas
 - search
 - translation
 - thesaurus
-- wordlist (basic filters only, not advance filters)
 - sentences
-- lexistats (only /word)
 - utility

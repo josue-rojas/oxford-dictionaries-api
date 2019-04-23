@@ -1,6 +1,7 @@
 const https = require('https');
 
 function httpsGetRequest(options) {
+  // options.path = encodeURIComponent(options.path);
   return new Promise((resolve, reject) => {
     https.get(options, (res) => {
       // error handling
@@ -22,7 +23,12 @@ function httpsGetRequest(options) {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
-        resolve(JSON.parse(data));
+        try {
+          const parsedData = JSON.parse(rawData);
+          resolve(parsedData);
+        } catch (e) {
+          reject(new Error(e));
+        }
       })
       // other errors
         .on('error', (e) => {
@@ -40,138 +46,111 @@ class OxfordDictionaries {
       host: 'od-api.oxforddictionaries.com',
       port: 443,
       method: 'GET',
-      path: '/api/v1',
+      path: '/api/v2',
       headers: {
         Accept: 'application/json',
-        app_id,
-        app_key,
-      },
-    };
-
-    // setup functions for not so direct names endpoints
-    // first bind this
-    this.languages = this.languages.bind(this);
-    this.filters = this.filters.bind(this);
-    this.lexicalcategories = this.lexicalcategories.bind(this);
-    this.registers = this.registers.bind(this);
-    this.domains = this.domains.bind(this);
-    this.regions = this.regions.bind(this);
-    this.grammaticalFeatures = this.grammaticalFeatures.bind(this);
-    // then setup objects
-    // (might change or remove this since they can just be called straight without .utility)
-    this.utility = {
-      languages: this.languages,
-      filters: this.filters,
-      lexicalcategories: this.lexicalcategories,
-      registers: this.registers,
-      domains: this.domains,
-      regions: this.regions,
-      grammaticalFeatures: this.grammaticalFeatures,
+        app_id: app_id,
+        app_key: app_key
+      }
     };
   }
 
-  entries({
-    word_id, source_lang, region, filters,
-  }) {
+  entries({ word_id, source_lang, fields, grammaticalFeatures, lexicalCategory, domains, registers, strictMatch }) {
     const options = { ...this.options };
     options.path += '/entries'
-            + `/${source_lang || 'en'}`
+            + `/${source_lang || 'en-gb'}`
             + `/${word_id}`
-            + `${region ? `/regions=${region}` : ''}`
-            + `${filters ? `/${filters}` : ''}`;
+            + `?`
+            + `${fields ? `&fields=${fields.join('%2C')}` : ''}`
+            + `${grammaticalFeatures ? `&grammaticalFeatures=${grammaticalFeatures.join('%2C')}` : ''}`
+            + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory.join('%2C')}` : ''}`
+            + `${domains ? `&domains=${domains.join('%2C')}` : ''}`
+            + `${registers ? `&registers=${registers.join('%2C')}` : ''}`
+            + `&strictMatch=${strictMatch ? 'true' : 'false'}`
     return httpsGetRequest(options);
   }
 
-  lemmatron({ word_id, source_lang, filters }) {
+  lemmas({ word_id, source_lang, grammaticalFeatures, lexicalCategory }) {
     const options = { ...this.options };
-    options.path += '/inflections'
+    options.path += '/lemmas'
             + `/${source_lang || 'en'}`
             + `/${word_id}`
-            + `${filters ? `/${filters}` : ''}`;
+            + `${grammaticalFeatures || lexicalCategory ? '?' : ''}`
+            + `${grammaticalFeatures ? `&grammaticalFeatures=${grammaticalFeatures.join('%2C')}` : ''}`
+            + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory.join('%2C')}` : ''}`
     return httpsGetRequest(options);
   }
 
-  search({
-    source_lang, source_search_language, target_search_language, q, prefix, regions, limit, offset,
-  }) {
+  search({ source_lang, target_lang, q, prefix, limit, offset }) {
     const options = { ...this.options };
     options.path += '/search'
-            + `/${source_lang || source_search_language || 'en'}`
-            + `${target_search_language ? `/translation=${target_search_language}` : ''}`
+            + `/${source_lang || 'en-gb'}`
+            + `${target_lang ? `/${target_lang}` : ''}`
             + `?q=${q}`
             + `${prefix ? '&prefix=true' : '&prefix=false'}`
-            + `${regions ? `&regions=${regions}` : ''}`
             + `${limit ? `&limit=${limit}` : ''}`
             + `${offset ? `&offset=${offset}` : ''}`;
     return httpsGetRequest(options);
   }
 
-  translation({ source_translation_language, word_id, target_translation_language }) {
+  translation({ source_lang, target_lang, word_id, strictMatch }) {
     const options = { ...this.options };
-    options.path += '/entries'
-            + `/${source_translation_language}`
+    options.path += '/translations'
+            + `/${source_lang || 'en'}`
+            + `/${target_lang || 'es'}`
             + `/${word_id}`
-            + `/${target_translation_language}`;
+            + `&strictMatch=${strictMatch ? 'true' : 'false'}`;
     return httpsGetRequest(options);
   }
 
-  thesaurus({
-    word_id, source_lang, synonyms, antonyms,
-  }) {
+  thesaurus({ lang, word_id, fields, strictMatch }) {
     const options = { ...this.options };
-    options.path += '/entries'
+    options.path += '/thesaurus'
+            + `/${lang || 'en'}`
+            + `/${word_id}`
+            + `?`
+            + `${fields ? `&fields=${fields.join('%2C')}` : ''}`
+            + `&strictMatch=${strictMatch ? 'true' : 'false'}`;
+    return httpsGetRequest(options);
+  }
+
+  sentences({ source_lang, word_id, strictMatch }) {
+    const options = { ...this.options };
+    options.path += '/sentences'
             + `/${source_lang || 'en'}`
             + `/${word_id}`
-            + `/${synonyms ? 'synonyms' : ''}`
-            + `${synonyms && antonyms ? ';' : ''}`
-            + `${antonyms ? 'antonyms' : ''}`;
+            + `?strictMatch=${strictMatch ? 'true' : 'false'}`;
     return httpsGetRequest(options);
   }
 
-  // basic wordlist search for now
-  wordlist({
-    filters_basic, source_lang, limit, offset,
-  }) {
-    const options = { ...this.options };
-    options.path += '/wordlist'
-          + `/${source_lang || 'en'}`
-          + `/${filters_basic}`
-          + `${limit || offset ? '?' : ''}`
-          + `${limit ? `limit=${limit}` : ''}`
-          + `${offset ? `?offset=${offset}` : ''}`;
-    return httpsGetRequest(options);
-  }
-
-  sentences({ word_id, source_lang }) {
-    const options = { ...this.options };
-    options.path += '/entries'
-            + `/${source_lang || 'en'}`
-            + `/${word_id}`
-            + '/sentences';
-    return httpsGetRequest(options);
-  }
-
-  lexistats({
-    source_lang, corpus, wordform, trueCase, lemma, lexicalCategory,
-  }) {
-    const options = { ...this.options };
-    options.path += '/stats/frequency/words'
-            + `/${source_lang}`
-            + '/?'
-            + `${corpus ? `corpus=${corpus}` : ''}`
-            + `${wordform ? `&wordform=${wordform}` : ''}`
-            + `${trueCase ? `&trueCase=${trueCase}` : ''}`
-            + `${lemma ? `&lemma=${lemma}` : ''}`
-            + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory}` : ''}`;
-    return httpsGetRequest(options);
-  }
+  // lexistats({
+  //   source_lang, corpus, wordform, trueCase, lemma, lexicalCategory,
+  // }) {
+  //   const options = { ...this.options };
+  //   options.path += '/stats/frequency/words'
+  //           + `/${source_lang}`
+  //           + '/?'
+  //           + `${corpus ? `corpus=${corpus}` : ''}`
+  //           + `${wordform ? `&wordform=${wordform}` : ''}`
+  //           + `${trueCase ? `&trueCase=${trueCase}` : ''}`
+  //           + `${lemma ? `&lemma=${lemma}` : ''}`
+  //           + `${lexicalCategory ? `&lexicalCategory=${lexicalCategory}` : ''}`;
+  //   return httpsGetRequest(options);
+  // }
 
   // utility functions
-  languages({ sourceLanguage, targetLanguage } = {}) {
+  domains({ source_lang, target_lang } = {}) {
     const options = { ...this.options };
-    options.path += '/languages?'
-          + `${sourceLanguage ? `sourceLanguage=${sourceLanguage}` : ''}`
-          + `${targetLanguage ? `&targetLanguage=${targetLanguage}` : ''}`;
+    options.path += '/domains'
+            + `/${source_lang || 'en-gb'}`
+            + `${target_lang ? `/${target_lang}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  fields({ endpoint } = {}){
+    const options = { ...this.options };
+    options.path += '/fields'
+            + `${endpoint ? `/${endpoint}` : ''}`;
     return httpsGetRequest(options);
   }
 
@@ -182,40 +161,35 @@ class OxfordDictionaries {
     return httpsGetRequest(options);
   }
 
-  lexicalcategories({ language } = {}) {
-    const options = { ...this.options };
-    options.path += '/lexicalcategories'
-            + `/${language || 'en'}`;
-    return httpsGetRequest(options);
-  }
-
-  registers({ source_language, target_register_language } = {}) {
-    const options = { ...this.options };
-    options.path += '/registers'
-            + `/${source_language || 'en'}`
-            + `${target_register_language ? `/${target_register_language}` : ''}`;
-    return httpsGetRequest(options);
-  }
-
-  domains({ source_language, target_register_language } = {}) {
-    const options = { ...this.options };
-    options.path += '/domains'
-            + `/${source_language || 'en'}`
-            + `${target_register_language ? `/${target_register_language}` : ''}`;
-    return httpsGetRequest(options);
-  }
-
-  regions({ source_language } = {}) {
-    const options = { ...this.options };
-    options.path += '/regions'
-            + `/${source_language || 'en'}`;
-    return httpsGetRequest(options);
-  }
-
-  grammaticalFeatures({ source_language } = {}) {
+  grammaticalFeatures({ source_lang, target_lang } = {}) {
     const options = { ...this.options };
     options.path += '/grammaticalFeatures'
-            + `/${source_language || 'en'}`;
+            + `/${source_lang || 'en'}`
+            + `${target_lang ? `/${target_lang}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  languages({ sourceLanguage, targetLanguage } = {}) {
+    const options = { ...this.options };
+    options.path += '/languages?'
+          + `${sourceLanguage ? `sourceLanguage=${sourceLanguage}` : ''}`
+          + `${targetLanguage ? `&targetLanguage=${targetLanguage}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  lexicalcategories({ source_lang, target_lang } = {}) {
+    const options = { ...this.options };
+    options.path += '/lexicalcategories'
+            + `/${source_lang || 'en'}`
+            + `${target_lang ? `/${target_lang}` : ''}`;
+    return httpsGetRequest(options);
+  }
+
+  registers({ source_lang, target_lang } = {}) {
+    const options = { ...this.options };
+    options.path += '/registers'
+            + `/${source_lang || 'en'}`
+            + `${target_lang ? `/${target_lang}` : ''}`;
     return httpsGetRequest(options);
   }
 }
