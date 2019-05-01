@@ -6,15 +6,19 @@ const app_key = process.env.APP_KEY;
 let oxforddic= require('./index');
 let oxforddictionaries = new oxforddic(app_id, app_key);
 
-oxforddictionaries.entries({word_id: 'ace'})
-  .then((data)=>{
-    console.log('entries',data);
-  })
 
-oxforddictionaries.wordlist({filters_basic:'registers=Rare;domains=Art'})
-  .then((data)=>{
-    console.log('wordlist',data);
-  })
+// oxforddictionaries.entries({word_id: 'ace'})
+//   .then((data)=>{
+//     console.log('entries',data);
+//   })
+//   .catch((e) => console.log(e));
 
-oxforddictionaries.utility.languages()
-  .then((data)=> console.log('languages',data));
+oxforddictionaries.grammaticalFeatures({source_lang: 'en-gb'})
+  .then((data)=>{
+    console.log(data);
+  })
+  .catch((e) => console.log('e', e));
+
+// oxforddictionaries.languages()
+//   .then((data)=> console.log('languages',data))
+//   .catch((e) => console.log(e));

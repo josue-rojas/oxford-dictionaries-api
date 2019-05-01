@@ -1,6 +1,8 @@
 # oxford-dictionaries-api
 node module wraper for [Oxford dictionaries api](https://developer.oxforddictionaries.com)
 
+Note: To use api v1 then use version 0.0.6. V1 will be deprecated after July 31, 2019. 
+
 ## Install
 ```bash
 npm install --save oxford-dictionaries-api
@@ -20,112 +22,65 @@ let oxforddictionaries = new oxford(app_id, app_key);
 
 ### functions
 
-#### entries({word_id, source_lang, region, filters})
+#### entries({ word_id, source_lang, fields, grammaticalFeatures, lexicalCategory, domains, registers, strictMatch })
+
 function takes in an object with the following:
 
 
-| Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| word_id | String | No | An Entry identifier. Case-sensitive. |
-| source_lang | String | Yes | IANA language code |
-| region | String | Yes | Region filter parameter. gb = Oxford Dictionary of English. us = New Oxford American Dictionary. |
-| filters | String | Yes | Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma. |
+| Key | Type | Optional | About | Default | Example |
+| --- | --- | -- | --- | --- | --- |
+| word_id | String | No | The identifier for an Entry (case-sensitive). | Null | "ace" |
+| source_lang | String | Yes | Language code of the source language in a monolingual dataset. | "en-gb" | "en-gb" |
+| fields | Array[String] | Yes | A comma-separated list of data fields to return for the matched entries | Null | ["definitions", "domains"] |
+| grammaticalFeatures | Array[String] | Yes | A comma-separated list of grammatical features ids to match on (default: all features). | Null | ["Cardinal", "Ordinal"] |
+| lexicalCategory | Array[String] | Yes | A comma-separated list of lexical categories ids to match on (default: all categories). | Null | |
+| domains | Array[String] | Yes | A comma-separated list of domains ids to match on (default: all domains). | Null | |
+| registers | Array[String] | Yes | A comma-separated list of registers ids to match on (default: all registers). | Null | |
+| strictMatch | Boolean | Yes | Specifies whether diacritics must match exactly. | False | True |
 
 Example:
 ```javascript
-// https://developer.oxforddictionaries.com/documentation#!/Dictionary32entries/get_entries_source_lang_word_id
-// Use this to retrieve definitions, pronunciations, example sentences, grammatical information and word origins
 oxforddictionaries.entries({word_id: 'ace'})
-  .then((data)=> console.log(data));
-
-// https://developer.oxforddictionaries.com/documentation#!/Dictionary32entries/get_entries_source_lang_word_id_regions_region
-// Use this filter to restrict the lookup to either our Oxford Dictionary of English (GB) or New Oxford American Dictionary (US).
-oxforddictionaries.entries({word_id: 'ace', region: 'gb'})
-  .then((data)=> console.log(data));
-
-// https://developer.oxforddictionaries.com/documentation#!/Dictionary32entries/get_entries_source_lang_word_id_filters
-// Use filters to limit the entry information that is returned.
-oxforddictionaries.entries({word_id: 'ace', filter: 'grammaticalFeatures=singular,past;lexicalCategory=noun'})
-  .then((data)=> console.log(data));
-
+  .then((data) => console.log(data))
+  .catch((e) => console.log('Error', e));
 ```
 
-#### lemmatron({word_id, source_lang, filters})
-function takes in an object with the following:
+#### lemmas({ word_id, source_lang, grammaticalFeatures, lexicalCategory })
+#### search({ source_lang, target_lang, q, prefix, limit, offset })
+#### translation({ source_lang, target_lang, word_id, strictMatch })
+#### thesaurus({ lang, word_id, fields, strictMatch })
+#### sentences({ source_lang, word_id, strictMatch })
+#### lexistats_ngrams({ source_lang, corpus, ngram_size, tokens, contains, format, minFrequency, maxFrequency, collate, sort, offset, limit })
+#### lexistats_word({ source_lang, corpus, wordform, trueCase, lemma, lexicalCategory })
+#### lexistats_words({ source_lang, corpus, wordform, trueCase, lemma, lexicalCategory, grammaticalFeatures, minFrequency, maxFrequency, minNormalizedFrequency, maxNormalizedFrequency, collate, sort, offset, limit })
+#### domains({ source_lang, target_lang } = {})
+#### fields({ endpoint } = {})
+#### filters({ endpoint } = {})
+#### grammaticalFeatures({ source_lang, target_lang } = {})
+#### languages({ sourceLanguage, targetLanguage } = {})
+#### lexicalcategories({ source_lang, target_lang } = {})
+#### registers({ source_lang, target_lang } = {})
 
-|Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| word_id | String | No | The input word |
-| source_lang | String | Yes | IANA language code |
-| filters | String | Yes | Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma.
+TODO:
 
-
-#### translation({source_translation_language, word_id, target_translation_language})
-function takes in an object with the following:
-
-|Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| source_lang | String | No | IANA language code |
-| word_id | String| No| The source word|
-| target_translation_language | String | No | IANA language code |
-
-#### thesaurus({word_id, source_lang, synonyms, antonyms})
-function takes in an object with the following:
-
-|Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| word_id | String | No | An Entry identifier. Case-sensitive |
-| source_lang | String | Yes | IANA language code |
-| synonyms | boolean | No | Flag to get synonyms |
-| antonyms | boolean | No | Flag to get antonyms |
-
-#### wordlist({filters_basic, source_lang, limit, offset})
-function takes in an object with the following:
-
-|Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| filters_basic | | | |
-| source_lang | | | |
-| limit | | | |
-| offset | | | |
-
-#### sentences({word_id, source_lang})
-function takes in an object with the following:
-
-|Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| word_id | String | No | An Entry identifier. Case-sensitive. |
-| source_lang | String | Yes | IANA language code |
-
-#### lexistats({source_lang, corpus, wordform, trueCase, lemma, lexicalCategory})
-Note only endpoint: /stats/frequency/word/{source_lang}/
-
-function takes in an object with the following:
-
-|Key | Type | Optional | About |
-| --- | --- | -- | --- |
-| source_lang | String | No | ANA language code |
-| corpus | String | No | For corpora other than 'nmc' (New Monitor Corpus) please contact api@oxforddictionaries.com |
-| wordform | String | Yes | The written form of the word to look up (preserving case e.g., Books vs books) |
-| trueCase | String | Yes | The written form of the word to look up with normalised case (Books --> books) |
-| lemma | String | Yes | The lemma of the word to look up (e.g., Book, booked, books all have the lemma "book") |
-| lexicalCategory | String | Yes | The lexical category of the word(s) to look up (e.g., noun or verb) |
-
-
-### TODO:
-- need to implement lexistats (/words and /ngrams) api
-- need to implement wordlist with advance filter api
-- need to add testing and test ***
-- add defaults
-- need to update readme with examples
-
-## Already implemented
-- entries
-- lemmatron
+Readme Table
+- lemmas
 - search
 - translation
 - thesaurus
-- wordlist (basic filters only, not advance filters)
 - sentences
-- lexistats (only /word)
+- lexistats
+- utility
+
+Readme Example
+- entries
+
+Testing
+- entries
+- lemmas
+- search
+- translation
+- thesaurus
+- sentences
+- lexistats
 - utility
