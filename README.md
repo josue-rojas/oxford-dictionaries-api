@@ -1,7 +1,6 @@
 # oxford-dictionaries-api
-node module wraper for [Oxford dictionaries api](https://developer.oxforddictionaries.com)
+node module wrapper for [Oxford dictionaries api v2](https://developer.oxforddictionaries.com)
 
-Note: To use api v1 then use version 0.0.6. V1 will be deprecated after July 31, 2019. 
 
 ## Install
 ```bash
@@ -21,6 +20,8 @@ let oxforddictionaries = new oxford(app_id, app_key);
 ```
 
 ### functions
+
+Note: A lot of the key names for the functions' objects are taken from the oxford docs [Here](https://developer.oxforddictionaries.com/documentation#!/). I might not have updated this readme cause I probably would be working on other things. (I think the biggest thing that people would usually use is entries, which should get you the definition of words)
 
 #### entries({ word_id, source_lang, fields, grammaticalFeatures, lexicalCategory, domains, registers, strictMatch })
 
@@ -60,27 +61,3 @@ oxforddictionaries.entries({word_id: 'ace'})
 #### languages({ sourceLanguage, targetLanguage } = {})
 #### lexicalcategories({ source_lang, target_lang } = {})
 #### registers({ source_lang, target_lang } = {})
-
-TODO:
-
-Readme Table
-- lemmas
-- search
-- translation
-- thesaurus
-- sentences
-- lexistats
-- utility
-
-Readme Example
-- entries
-
-Testing
-- entries
-- lemmas
-- search
-- translation
-- thesaurus
-- sentences
-- lexistats
-- utility
