@@ -1,8 +1,6 @@
 # oxford-dictionaries-api
 node module wraper for [Oxford dictionaries api](https://developer.oxforddictionaries.com)
 
-Note: To use api v1 then use version 0.0.6. V1 will be deprecated after July 31, 2019. 
-
 ## Install
 ```bash
 npm install --save oxford-dictionaries-api
