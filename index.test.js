@@ -21,7 +21,8 @@ test("lemmas function returns object", () => {
     });
 });
 
-// for some reason search is failing cause of 403 (Authentication failed)
+// not testing the rest of the functions because i do not have an the right api keys for it. (i have the prototype account read more here: https://developer.oxforddictionaries.com/documentation/getting_started) 
+
 // .search test
 // test("search function returns object", () => {
 //   return oxforddictionaries.search({q: 'cat'})
@@ -39,7 +40,7 @@ test("lemmas function returns object", () => {
 //     });
 // });
 
-// same failing as above 
+// same failing as above
 // .thesaurus test
 // test("thesaurus function returns object", () => {
 //   return oxforddictionaries.lemmas({word_id: 'ace'})

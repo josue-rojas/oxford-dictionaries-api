@@ -1,7 +1,6 @@
 # oxford-dictionaries-api
 node module wrapper for [Oxford dictionaries api v2](https://developer.oxforddictionaries.com)
 
-
 ## Install
 ```bash
 npm install --save oxford-dictionaries-api
